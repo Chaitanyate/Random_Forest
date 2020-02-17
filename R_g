@@ -1,0 +1,24 @@
+import pandas as pd
+import numpy as np
+
+data=pd.read_csv('/home/chaitanya/chaitanya/ML/Logistic_Regression/Logistic_Regression/Social_Network_Ads.csv')
+x=data.iloc[:,[2,3]]
+y=data.iloc[:,4]
+
+from sklearn.cross_validation import train_test_split
+xtrain,xtest,ytrain,ytest=train_test_split(x,y,test_size=0.25,random_state=0)
+
+from sklearn.preprocessing import StandardScaler
+s=StandardScaler()
+Xtr=s.fit_transform(xtrain)
+Xtes=s.transform(xtest)
+
+from sklearn.ensemble import RandomForestClassifier
+ran=RandomForestClassifier(n_jobs=2,random_state=0)
+ran.fit(Xtr,ytrain)
+
+ypred=ran.predict(Xtes)
+
+from sklearn.metrics import accuracy_score
+print(accuracy_score(ytest,ypred)*100)
+pd.crosstab(ytest,ypred)
